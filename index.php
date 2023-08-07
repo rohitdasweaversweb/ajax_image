@@ -96,14 +96,14 @@
         $(document).on('click','.delete',function(){
             if(confirm('Are you Sure?')){
               var did = $(this)["id"];
-              $.ajax({
-                url:"del.php",
-                    type:"POST",
-                    data:{id:did},
-                    success:function(data){
-                        alert('Delete');
-                    }
-              });
+                $.ajax({
+                        url:"del.php",
+                        type:"POST",
+                        data:{id:did},
+                        success:function(data){
+                            alert('Delete');
+                        }
+                });
             }
         });
  
