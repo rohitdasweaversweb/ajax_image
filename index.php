@@ -53,7 +53,8 @@
                             <td><img src="picture/<?php echo $row['image'];?>" style="width: 100px;"></td>
                             <td>
                                 <button class="btn btn-warning" id="edit">edit</button>
-                                <button name="del_btn" class="btn btn-danger" id="del" onclick="delRecord($did='<?php echo $row['id'] ?>')">Delete</button>    
+                                <!-- <button name="del_btn" class="btn btn-danger" id="del" onclick="delRecord($did='<?php echo $row['id'] ?>')">Delete</button>     -->
+                                <span class="delete btn btn-danger" data-id="<?php echo $row['id'];?>">Delete</span>
                             </td>
                         </tr>
                     </tbody>
@@ -64,18 +65,7 @@
     </div>
 </body>
 <script>
-    // $(document).ready(function(){
-    // function getData(){
-    //     $.ajax({
-    //         url:'listing.php',
-    //         type:'GET',
-    //         dataType:'html',
-    //         success:function(data){
-    //             $('#tbl').html(data)
-    //         }
-    //     });
-    // }
-    // getData();
+   
 
 
     function addData(){
@@ -102,26 +92,23 @@
         });
     }
 
-
-    function delRecord(){
-        if(confirm('Are you sure?')){
-        var fd=new FormData();
-        fd.append("id",id);
-        $.ajax({
-        url:"del.php",
-        type:'GET',
-        data:fd,
-        contentType:false,
-        processData:false,
-        success:function(data){
-                alert(data);return;
-                $("#tbl").html(data);
-                // getData();
+    
+        $(document).on('click','.delete',function(){
+            if(confirm('Are you Sure?')){
+              var did = $(this)["id"];
+              $.ajax({
+                url:"del.php",
+                    type:"POST",
+                    data:{id:did},
+                    success:function(data){
+                        alert('Delete');
+                    }
+              });
             }
         });
-      }
-    }
-    // delRecord();
-    // });
+ 
+
+
+    
 </script>
 </html>
