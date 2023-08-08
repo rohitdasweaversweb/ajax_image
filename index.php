@@ -53,8 +53,7 @@
                             <td><img src="picture/<?php echo $row['image'];?>" style="width: 100px;"></td>
                             <td>
                                 <button class="btn btn-warning" id="edit">edit</button>
-                                <!-- <button name="del_btn" class="btn btn-danger" id="del" onclick="delRecord($did='<?php echo $row['id'] ?>')">Delete</button>     -->
-                                <span class="delete btn btn-danger" data-id="<?php echo $row['id'];?>">Delete</span>
+                                <a class="delete btn btn-danger" id="<?php echo $row['id'];?>">Delete</a>
                             </td>
                         </tr>
                     </tbody>
@@ -93,16 +92,19 @@
     }
 
     
-        $(document).on('click','.delete',function(){
+    $('.delete').click(function() {
+            var did= $(this).attr("id");  
             if(confirm('Are you Sure?')){
-              var did = $(this)["id"];
                 $.ajax({
-                        url:"del.php",
-                        type:"POST",
-                        data:{id:did},
-                        success:function(data){
-                            alert('Delete');
-                        }
+                    url:"del.php",
+                    type:"POST",
+                    data:({id:did}),
+                    // cache: false,
+                    success:function(data){
+                        // alert('Delete');
+                        window.location.reload();
+
+                    }
                 });
             }
         });
