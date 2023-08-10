@@ -1,4 +1,4 @@
-<div class="col-md-6">
+
                 <!-- <h4 class="md-5">user Details</h4> -->
                 <table class="table" >
                     <thead>
@@ -29,4 +29,3 @@
                     </tbody>
                     <?php }?> 
                  </table>
-          </div>

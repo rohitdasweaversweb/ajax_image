@@ -24,7 +24,7 @@
                     <p><input type="text" class="form-control-sm" name="email" id="email"></p>
                     <p>pic</p>
                     <p><input type="file" class="form-control-sm" name="simg" id="simg"></p>
-                    <p><input type="button" value="Submit" onclick="addData()"></p>
+                    <p><input type="button" class="btn btn-primary" value="Submit" onclick="addData()"></p>
                 </form>
           </div>
 
@@ -52,18 +52,56 @@
                             <td><?php echo $row['email'];?></td>
                             <td><img src="picture/<?php echo $row['image'];?>" style="width: 100px;"></td>
                             <td>
-                                <button class="btn btn-warning" id="edit">edit</button>
                                 <a class="delete btn btn-danger" id="<?php echo $row['id'];?>">Delete</a>
+                               
+                               
+                                <!-- //edit modal// -->
+                                <div class="modal" id="edit<?php echo $row['id'];?>">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                        <h4 class="modal-title">Modal Heading</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <div class="container">
+                                    <form enctype="multipart/form-data" id="frmedit" onsubmit="return editData(this)">
+                                    <input type="text" name="id" value="<?php echo $row['id'];?>">
+                                        <p>Name</p>
+                                        <p><input type="text" class="form-control-sm" name="name" value="<?php echo $row['name'];?>"></p>
+                                        <p>email</p>
+                                        <p><input type="text" class="form-control-sm" name="email" value="<?php echo $row['email'];?>"></p>
+                                        <p>pic</p>
+                                        <p><input type="file" class="form-control-sm" name="img">
+                                        <img src="picture/<?php echo $row['image'];?>" style="width: 100px;">
+                                    <p><input type="submit" value="Edit" class="btn btn-success"></p>
+                                    </p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+          <!-- //edit modal end// -->
+
+                                <button class="btn btn-warning" id="edit" data-bs-toggle="modal" data-bs-target="#edit<?php echo $row['id']?>">Update</button>
                             </td>
                         </tr>
                     </tbody>
                     <?php }?> 
+                    <!-- <th><td><h5 class="text-center" style="color:green">No Data Found</h5></td></th> -->
                  </table>
           </div>
-        </div>   
+         
+          
+        </div>  
     </div>
 </body>
-<script>
+<script type="text/javascript">
    
 
 
@@ -73,8 +111,6 @@
         fd.append("simg",img);
         fd.append("sname",$("#sname").val());
         fd.append("email",$("#email").val());
-
-
         $.ajax({
             url:"insert.php",
             type:"POST",
@@ -82,9 +118,7 @@
             contentType:false,
             processData:false,
             success:function(data){
-                // alert(data);return;  
                 // $("#tbl").html(data);
-                // document.getElementById("frm").reset();
                 $("#frm")[0].reset();
                 window.location.reload();
             }
@@ -92,24 +126,39 @@
     }
 
     
-    $('.delete').click(function() {
+        $('.delete').click(function() {
             var did= $(this).attr("id");  
             if(confirm('Are you Sure?')){
                 $.ajax({
                     url:"del.php",
                     type:"POST",
                     data:({id:did}),
-                    // cache: false,
+                    cache: false,
                     success:function(data){
-                        // alert('Delete');
+                        $("#tbl"+did).fadeOut("fast");
                         window.location.reload();
+
+                        // console.log(data);
 
                     }
                 });
             }
         });
 
-
-    
+        function editData(ev){
+            var fd=new FormData(ev);
+            $.ajax({
+                url:"edit.php",
+                type:"POST",
+                data:fd,
+                contentType:false,
+                processData:false,
+                success:function(data){
+                    // window.location.reload();
+                    $("body").load("index.php");
+                    document.getElementById("frmedit").reset();
+                }
+            });
+        }
 </script>
 </html>
